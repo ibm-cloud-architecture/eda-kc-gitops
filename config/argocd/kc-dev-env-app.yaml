@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: kc-dev-env
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: kc-dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: environments/kc-dev/env/overlays
+    repoURL: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+status:
+  health: {}
+  summary: {}
+  sync:
+    comparedTo:
+      destination: {}
+      source:
+        repoURL: ""
+    status: ""

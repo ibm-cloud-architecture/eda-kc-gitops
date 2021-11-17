@@ -1,0 +1,48 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  creationTimestamp: null
+  name: cicd-event-listener
+  namespace: kc-cicd
+spec:
+  namespaceSelector: {}
+  podTemplate: {}
+  resources: {}
+  serviceAccountName: pipeline
+  triggers:
+  - bindings:
+    - ref: github-push-binding
+    interceptors:
+    - github:
+        secretRef:
+          secretKey: webhook-secret-key
+          secretName: gitops-webhook-secret
+    - cel:
+        filter: (header.match('X-GitHub-Event', 'push') && body.repository.full_name
+          == 'ibm-cloud-architecture/eda-kc-gitops')
+        overlays:
+        - expression: body.ref.split('/')[2]
+          key: ref
+    name: ci-dryrun-from-push
+    template:
+      ref: ci-dryrun-from-push-template
+  - bindings:
+    - ref: kc-dev-app-eda-kc-order-cmd-mq-eda-kc-order-cmd-mq-binding
+    - ref: github-push-binding
+    interceptors:
+    - github:
+        secretRef:
+          secretKey: webhook-secret-key
+          secretName: webhook-secret-kc-dev-eda-kc-order-cmd-mq
+    - cel:
+        filter: (header.match('X-GitHub-Event', 'push') && body.repository.full_name
+          == 'ibm-cloud-architecture/eda-kc-order-cmd-mq')
+        overlays:
+        - expression: body.ref.split('/')[2]
+          key: ref
+    name: app-ci-build-from-push-eda-kc-order-cmd-mq
+    template:
+      ref: app-ci-template
+status:
+  configuration:
+    generatedName: ""

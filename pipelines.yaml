@@ -1,0 +1,29 @@
+config:
+  argocd:
+    namespace: openshift-gitops
+  pipelines:
+    name: kc-cicd
+environments:
+- apps:
+  - name: app-eda-kc-order-cmd-mq
+    services:
+    - name: eda-kc-order-cmd-mq
+      pipelines:
+        integration:
+          bindings:
+          - kc-dev-app-eda-kc-order-cmd-mq-eda-kc-order-cmd-mq-binding
+          - github-push-binding
+      source_url: https://github.com/ibm-cloud-architecture/eda-kc-order-cmd-mq.git
+      webhook:
+        secret:
+          name: webhook-secret-kc-dev-eda-kc-order-cmd-mq
+          namespace: kc-cicd
+  name: kc-dev
+  pipelines:
+    integration:
+      bindings:
+      - github-push-binding
+      template: app-ci-template
+- name: kc-stage
+gitops_url: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git
+version: 1

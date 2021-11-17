@@ -1,0 +1,62 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  creationTimestamp: null
+  name: ci-dryrun-from-push-pipeline
+  namespace: kc-cicd
+spec:
+  finally:
+  - name: set-final-status
+    params:
+    - name: REPO
+      value: $(params.REPO)
+    - name: GIT_REPO
+      value: $(params.GIT_REPO)
+    - name: COMMIT_SHA
+      value: $(params.COMMIT_SHA)
+    - name: DESCRIPTION
+      value: The build is complete
+    - name: STATE
+      value: $(tasks.apply-source.status)
+    taskRef:
+      kind: Task
+      name: set-commit-status
+  params:
+  - name: REPO
+    type: string
+  - name: COMMIT_SHA
+    type: string
+  - name: GIT_REPO
+    type: string
+  resources:
+  - name: source-repo
+    type: git
+  tasks:
+  - name: set-pending-status
+    params:
+    - name: REPO
+      value: $(params.REPO)
+    - name: GIT_REPO
+      value: $(params.GIT_REPO)
+    - name: COMMIT_SHA
+      value: $(params.COMMIT_SHA)
+    - name: DESCRIPTION
+      value: The build has started
+    - name: STATE
+      value: pending
+    taskRef:
+      kind: Task
+      name: set-commit-status
+  - name: apply-source
+    params:
+    - name: DRYRUN
+      value: "true"
+    resources:
+      inputs:
+      - name: source
+        resource: source-repo
+    runAfter:
+    - set-pending-status
+    taskRef:
+      kind: Task
+      name: deploy-from-source-task

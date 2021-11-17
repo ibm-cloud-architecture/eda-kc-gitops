@@ -1,0 +1,6 @@
+resources:
+- argo-app.yaml
+# - cicd-app.yaml
+- kc-dev-app-eda-kc-order-cmd-mq-app.yaml
+- kc-dev-env-app.yaml
+# - kc-stage-env-app.yaml

@@ -1,0 +1,16 @@
+resources:
+- 01-namespaces/cicd-environment.yaml
+- 02-rolebindings/argocd-admin.yaml
+- 02-rolebindings/pipeline-service-account.yaml
+- 02-rolebindings/pipeline-service-role.yaml
+- 02-rolebindings/pipeline-service-rolebinding.yaml
+- 03-tasks/deploy-from-source-task.yaml
+- 03-tasks/set-commit-status-task.yaml
+- 04-pipelines/app-ci-pipeline.yaml
+- 04-pipelines/ci-dryrun-from-push-pipeline.yaml
+- 05-bindings/github-push-binding.yaml
+- 05-bindings/kc-dev-app-eda-kc-order-cmd-mq-eda-kc-order-cmd-mq-binding.yaml
+- 06-templates/app-ci-build-from-push-template.yaml
+- 06-templates/ci-dryrun-from-push-template.yaml
+- 07-eventlisteners/cicd-event-listener.yaml
+- 08-routes/gitops-webhook-event-listener.yaml

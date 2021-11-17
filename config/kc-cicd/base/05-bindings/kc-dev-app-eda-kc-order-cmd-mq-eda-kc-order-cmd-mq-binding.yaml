@@ -1,0 +1,13 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  creationTimestamp: null
+  name: kc-dev-app-eda-kc-order-cmd-mq-eda-kc-order-cmd-mq-binding
+  namespace: kc-cicd
+spec:
+  params:
+  - name: imageRepo
+    value: quay.io/ibmcase/kc-order-cmd-mq
+  - name: tlsVerify
+    value: "true"
+status: {}

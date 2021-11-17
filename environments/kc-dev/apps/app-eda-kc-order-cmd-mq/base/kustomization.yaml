@@ -1,0 +1,2 @@
+bases:
+- ../services/eda-kc-order-cmd-mq

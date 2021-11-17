@@ -1,0 +1,3 @@
+resources:
+- argocd-admin.yaml
+- kc-stage-environment.yaml

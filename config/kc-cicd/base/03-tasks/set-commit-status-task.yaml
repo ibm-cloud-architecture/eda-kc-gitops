@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  creationTimestamp: null
+  name: set-commit-status
+  namespace: kc-cicd
+spec:
+  params:
+  - name: GIT_REPO
+    type: string
+  - name: REPO
+    type: string
+  - default: git-host-access-token
+    name: GIT_TOKEN_SECRET_NAME
+    type: string
+  - default: token
+    name: GIT_TOKEN_SECRET_KEY
+    type: string
+  - name: COMMIT_SHA
+    type: string
+  - name: DESCRIPTION
+    type: string
+  - default: continous-integration/tekton
+    name: CONTEXT
+    type: string
+  - name: STATE
+    type: string
+  steps:
+  - env:
+    - name: GITHOSTACCESSTOKEN
+      valueFrom:
+        secretKeyRef:
+          key: $(params.GIT_TOKEN_SECRET_KEY)
+          name: $(params.GIT_TOKEN_SECRET_NAME)
+    image: quay.io/redhat-developer/gitops-commit-status@sha256:ef5b3b242bf3b42a3a5d3ff74b3c7d495c608297b7428ae57b8ece10954e7546
+    name: set-commit-status
+    resources: {}
+    script: gitops-commit-status --url $(params.GIT_REPO) --path $(params.REPO) --sha
+      $(params.COMMIT_SHA) --context $(params.CONTEXT) --status $(params.STATE)

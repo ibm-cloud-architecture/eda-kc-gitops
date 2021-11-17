@@ -1,0 +1,4 @@
+resources:
+- argocd-admin.yaml
+- kc-dev-environment.yaml
+- kc-dev-rolebinding.yaml
