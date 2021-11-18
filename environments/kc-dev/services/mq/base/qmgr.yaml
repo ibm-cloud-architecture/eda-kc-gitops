@@ -1,0 +1,35 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: kc-mq
+  namespace: kc-dev
+spec:
+  license:
+    accept: true
+    license: L-RJON-BZFQU2
+    use: NonProduction
+  queueManager:
+    name: QM1
+    metrics:
+      enabled: true
+    route:
+      enabled: true
+    storage:
+      queueManager:
+        type: ephemeral
+    mqsc:
+    - configMap:
+        name: kc-mq-msqc
+        items:
+        - mqsc
+  template:
+    pod:
+      containers:
+        - env:
+            - name: MQSNOAUT
+              value: 'yes'
+          name: qmgr
+  version: 9.2.3.0-r1
+  web:
+    enabled: true
+

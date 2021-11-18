@@ -2,15 +2,15 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   creationTimestamp: null
-  name: kc-stage-env
+  name: mq-app
   namespace: openshift-gitops
 spec:
   destination:
-    namespace: kc-stage
+    namespace: smq-dev
     server: https://kubernetes.default.svc
   project: kc
   source:
-    path: environments/kc-stage/env/overlays
+    path: environments/kc-dev/apps/services/mq/overlays
     repoURL: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git
   syncPolicy:
     automated:

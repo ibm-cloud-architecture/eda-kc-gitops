@@ -10,7 +10,7 @@ spec:
   destination:
     namespace: kc-dev
     server: https://kubernetes.default.svc
-  project: default
+  project: kc
   source:
     path: environments/kc-dev/apps/app-eda-kc-order-cmd-mq/overlays
     repoURL: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git

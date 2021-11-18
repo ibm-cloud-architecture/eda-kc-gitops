@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kc-order-ms-cm
+data:
+  APP_VERSION: 0.0.1
+  MQ_HOST: store-mq-ibm-mq.smq-dev.svc
+  MQ_PORT: "1414"
+  MQ_QMGR: QM1 
+  MQ_QUEUE_NAME: DEV.QUEUE.1
+  MQ_CHANNEL: DEV.APP.SVRCONN

@@ -6,8 +6,6 @@ services:
         - '1414:1414'
         - '9443:9443'
         - '9157:9157'
-    volumes:
-        - qm1data:/mnt/mqm
     stdin_open: true
     tty: true
     restart: always
@@ -16,3 +14,7 @@ services:
         MQ_QMGR_NAME: QM1
         MQ_APP_PASSWORD: passw0rd
         MQ_ENABLE_METRICS: "true"
+  orderms:
+    image: quay.io/ibmcase/eda-kc-order-ms-mq
+    ports:
+        - '8080:8080'

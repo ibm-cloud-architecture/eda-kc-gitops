@@ -29,7 +29,7 @@ spec:
     jsonPointers:
     - /spec/host
     kind: Route
-  project: default
+  project: kc
   source:
     path: config/kc-cicd/overlays
     repoURL: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git
