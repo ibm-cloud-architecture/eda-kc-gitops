@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   ibmmq:
-    image: ibmcom/mq
+    image: quay.io/ibmcase/amqmq
     ports:
         - '1414:1414'
         - '9443:9443'

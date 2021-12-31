@@ -25,6 +25,7 @@ spec:
   template:
     pod:
       containers:
+        - image: quay.io/ibmcase/amqpmq
         - env:
             - name: MQSNOAUT
               value: 'yes'
