@@ -21,7 +21,7 @@ services:
       MQ_URL: "failover:(amqp://host.docker.internal:5672?jms.prefetchPolicy.queuePrefetch=1)"
       VOYAGE_REQUEST_QUEUE: DEV.VOYAGE_REQUEST
       VOYAGE_RESPONSE_QUEUE: DEV.VOYAGE_RESPONSE
-    image: "quay.io/ibmcase/eda-kc-order-cmd-mq:1.0-distroless"
+    image: "quay.io/ibmcase/eda-kc-order-ms-mq"
     depends_on:
       - "ibmmq"
     ports:
@@ -56,6 +56,3 @@ services:
      tty: true
      ports:
           - "8089:80"
-     volumes:
-          - "/vue-ui/node_modules"
-          - ".:/vue-ui"

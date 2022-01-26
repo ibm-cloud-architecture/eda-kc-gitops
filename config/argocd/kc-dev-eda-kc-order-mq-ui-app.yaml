@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: eda-kc-order-mq-ui-app
+  name: kc-dev-eda-kc-order-mq-ui-app
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: kc-dev
+    server: https://kubernetes.default.svc
+  project: kc-mq
+  source:
+    path: environments/kc-dev/apps/app-eda-kc-order-mq-ui/overlays
+    repoURL: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+status:
+  health: {}
+  summary: {}
+  sync:
+    comparedTo:
+      destination: {}
+      source:
+        repoURL: ""
+    status: ""

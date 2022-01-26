@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/ibm-cloud-architecture/eda-kc-order-mq-ui.git
+  labels:
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/name: eda-kc-order-mq-ui
+  name: eda-kc-order-mq-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/version: 0.0.1
+      app.kubernetes.io/name: eda-kc-order-mq-ui
+  template:
+    metadata:
+      annotations:
+        app.openshift.io/vcs-url: https://github.com/ibm-cloud-architecture/eda-kc-order-mq-ui.git
+      labels:
+        app.kubernetes.io/version: 0.0.1
+        app.kubernetes.io/name: eda-kc-order-mq-ui
+    spec:
+      containers:
+        env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        envFrom:
+        - configMapRef:
+            name: kc-order-ui-cm
+        image: quay.io/kbilquees/eda-kc-order-mq-ui-main_web
+        # quay.io/ibmcase/eda-kc-order-mq-ui
+        imagePullPolicy: Always
+        name: order-ui
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+      serviceAccount: kc-sa
+      

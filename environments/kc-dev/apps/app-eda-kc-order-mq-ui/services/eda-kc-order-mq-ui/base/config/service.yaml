@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/ibm-cloud-architecture/eda-kc-order-mq-ui.git
+  labels:
+    app.kubernetes.io/name: eda-kc-order-mq-ui
+  name: eda-kc-order-mq-ui
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 80
+  selector:
+    app.kubernetes.io/name: eda-kc-order-mq-ui
+  type: ClusterIP
