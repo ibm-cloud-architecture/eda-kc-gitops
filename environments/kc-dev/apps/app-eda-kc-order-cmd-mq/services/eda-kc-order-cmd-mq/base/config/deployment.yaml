@@ -51,7 +51,7 @@ spec:
           value: /deployments/quarkus-run.jar
         envFrom:
         - configMapRef:
-            name: store-simulator-cm
+            name: kc-order-ms-cm
         image: quay.io/ibmcase/eda-kc-order-ms-mq
         imagePullPolicy: Always
         livenessProbe:
