@@ -2,7 +2,7 @@
 kind: EventStreams
 metadata:
   name: dev
-  namespace: rt-inventory-dev
+  namespace: kc-dev
 spec:
   version: 10.5.0
   license:
