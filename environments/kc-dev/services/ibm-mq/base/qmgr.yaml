@@ -25,12 +25,13 @@ spec:
   template:
     pod:
       containers:
-        - image: quay.io/ibmcase/amqpmq
+        - image: quay.io/ibmcase/ibm-mqadvanced-server-dev:9.2.4.0-amd64
+        - name: ibmmq
         - env:
             - name: MQSNOAUT
               value: 'yes'
           name: qmgr
-  version: 9.2.3.0-r1
+  version: 9.2.4.0
   web:
     enabled: true
 
