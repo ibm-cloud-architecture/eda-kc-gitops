@@ -1,6 +1,5 @@
 resources:
 - argo-app.yaml
-# - mq-app.yaml
 # - cicd-app.yaml
 - kc-dev-env-app.yaml
 - kc-dev-services-app.yaml

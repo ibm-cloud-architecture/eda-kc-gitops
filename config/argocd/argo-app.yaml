@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   creationTimestamp: null
-  name: argo-app
+  name: kc-mq-argo-app
   namespace: openshift-gitops
 spec:
   destination:
