@@ -1,2 +1,2 @@
 bases:
-- ../services/eda-kc-order-cmd-mq
+- ../services/eda-kc-order-mq-ui
