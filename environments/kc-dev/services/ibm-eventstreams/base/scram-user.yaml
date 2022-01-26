@@ -2,7 +2,7 @@ apiVersion: eventstreams.ibm.com/v1beta1
 kind: KafkaUser
 metadata:
   name: scram-user
-  namespace:  rt-inventory-dev
+  namespace:  kc-dev
   labels:
     eventstreams.ibm.com/cluster: dev
 spec:
