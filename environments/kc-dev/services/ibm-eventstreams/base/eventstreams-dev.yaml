@@ -1,0 +1,49 @@
+﻿apiVersion: eventstreams.ibm.com/v1beta1
+kind: EventStreams
+metadata:
+  name: dev
+  namespace: rt-inventory-dev
+spec:
+  version: 10.5.0
+  license:
+    accept: true
+    use: CloudPakForIntegrationNonProduction
+  requestIbmServices:
+    iam: true
+    monitoring: true
+  adminApi: {}
+  adminUI: {}
+  apicurioRegistry: {}
+  collector: {}
+  restProducer: {}
+  security:
+    internalTls: TLSv1.2
+  strimziOverrides:
+    entityOperator: 
+      topicOperator: {}
+      userOperator: {}
+    kafka:
+      replicas: 3
+      authorization:
+        type: runas
+      config:
+        inter.broker.protocol.version: '2.8'
+        interceptor.class.names: com.ibm.eventstreams.interceptors.metrics.ProducerMetricsInterceptor
+        log.cleaner.threads: 6
+        log.message.format.version: '2.8'
+        num.io.threads: 24
+        num.network.threads: 9
+        num.replica.fetchers: 3
+        offsets.topic.replication.factor: 3
+      listeners:
+        plain: {}
+        external:
+          type: route
+          authentication:
+            type: scram-sha-512
+      storage:
+        type: ephemeral
+    zookeeper:
+      replicas: 3
+      storage:
+        type: ephemeral

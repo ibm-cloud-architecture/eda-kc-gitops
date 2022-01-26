@@ -1,0 +1,3 @@
+bases:
+- ./ibm-eventstreams/overlays
+- ./ibm-mq/overlays

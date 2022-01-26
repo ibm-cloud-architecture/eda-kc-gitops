@@ -8,7 +8,7 @@ spec:
   destination:
     namespace: smq-dev
     server: https://kubernetes.default.svc
-  project: kc
+  project: kc-mq
   source:
     path: environments/kc-dev/apps/services/mq/overlays
     repoURL: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git

@@ -29,7 +29,7 @@ spec:
     jsonPointers:
     - /spec/host
     kind: Route
-  project: kc
+  project: kc-mq
   source:
     path: config/argocd
     repoURL: https://github.com/ibm-cloud-architecture/eda-kc-gitops.git

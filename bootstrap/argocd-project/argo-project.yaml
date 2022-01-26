@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: kc
+  name: kc-mq
   namespace: openshift-gitops
   labels:
     gitops.tier.layer: infra

@@ -1,7 +1,8 @@
 resources:
 - argo-app.yaml
-- mq-app.yaml
+# - mq-app.yaml
 # - cicd-app.yaml
-- kc-dev-app-eda-kc-order-cmd-mq-app.yaml
 - kc-dev-env-app.yaml
+- kc-dev-services-app.yaml
+- kc-dev-eda-kc-order-cmd-mq-app.yaml
 # - kc-stage-env-app.yaml
