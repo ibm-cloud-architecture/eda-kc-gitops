@@ -22,18 +22,15 @@ spec:
         app.kubernetes.io/name: eda-kc-order-mq-ui
     spec:
       containers:
-        env:
-        - name: KUBERNETES_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
+      - args:
+        name: order-ui
         envFrom:
         - configMapRef:
             name: kc-order-ui-cm
         image: quay.io/kbilquees/eda-kc-order-mq-ui-main_web
         # quay.io/ibmcase/eda-kc-order-mq-ui
         imagePullPolicy: Always
-        name: order-ui
+
         ports:
         - containerPort: 80
           name: http
