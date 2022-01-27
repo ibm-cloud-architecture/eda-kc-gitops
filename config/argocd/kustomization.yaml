@@ -6,4 +6,5 @@ resources:
 - kc-dev-eda-kc-order-cmd-mq-app.yaml
 - kc-dev-eda-kc-order-mq-ui-app.yaml
 - kc-dev-eda-kc-voyage-ms-mq-app.yaml
+- kc-dev-eda-kc-reefer-ms-mq-app.yaml
 # - kc-stage-env-app.yaml

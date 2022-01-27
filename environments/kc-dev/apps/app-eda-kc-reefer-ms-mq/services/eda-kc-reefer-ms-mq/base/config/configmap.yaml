@@ -1,11 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: kc-order-ms-cm
+  name: kc-reefer-ms-cm
 data:
   APP_VERSION: 0.0.2
   MQ_URL: failover:(amqp://kc-mq-ibm-mq.kc-dev.svc?jms.prefetchPolicy.queuePrefetch=1)
-  VOYAGE_REQUEST_QUEUE: DEV.VOYAGE_REQUEST
-  VOYAGE_RESPONSE_QUEUE: DEV.VOYAGE_RESPONSE
   FREEZER_REQUEST_QUEUE: DEV.FREEZER_REQUESTS
   FREEZER_RESPONSE_QUEUE: DEV.FREEZER_RESPONSES

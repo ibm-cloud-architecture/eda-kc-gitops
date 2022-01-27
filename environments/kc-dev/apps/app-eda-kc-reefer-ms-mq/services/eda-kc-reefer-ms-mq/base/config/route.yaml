@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/ibm-cloud-architecture/eda-kc-reefer-ms-mq.git
+  labels:
+    app.kubernetes.io/name: eda-kc-reefer-ms-mq
+  name: eda-kc-reefer-ms-mq
+spec:
+  host: ""
+  path: /
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: eda-kc-reefer-ms-mq
