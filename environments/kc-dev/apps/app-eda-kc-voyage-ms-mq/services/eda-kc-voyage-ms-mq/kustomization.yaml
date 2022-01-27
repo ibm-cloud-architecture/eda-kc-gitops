@@ -1,4 +1,3 @@
 bases:
 - overlays
-commonLabels:
-  app.openshift.io/vcs-source: ibm-cloud-architecture/eda-kc-gitops
+
