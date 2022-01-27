@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/ibm-cloud-architecture/eda-kc-voyage-ms-mq.git
+  labels:
+    app.kubernetes.io/name: eda-kc-voyage-ms-mq
+  name: eda-kc-voyage-ms-mq
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8081
+  selector:
+    app.kubernetes.io/name: eda-kc-voyage-ms-mq
+  type: ClusterIP
