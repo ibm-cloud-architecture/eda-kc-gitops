@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/name: eda-kc-voyage-ms-mq
   name: eda-kc-voyage-ms-mq
 spec:
-  host: ""
   path: /
   port:
     targetPort: 8080
