@@ -17,11 +17,6 @@ spec:
     storage:
       queueManager:
         type: ephemeral
-    mqsc:
-    - configMap:
-        name: kc-mq-msqc
-        items:
-        - mqsc
   template:
     pod:
       containers:
