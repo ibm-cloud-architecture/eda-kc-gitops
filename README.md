@@ -20,6 +20,9 @@ This repository uses a GitOps approach to manage deployment to OpenShift Cluster
 cd local-demo/mq-based
 docker compose up
 ```
+* The User interface to demonstrate the MQ saga is on URL [http://localhost:8089](http://localhost:8089)
+* The Swagger for Order is [http://localhost:8080](http://localhost:8080/q/swagger-ui)
+* The Swagger for Voyage is [http://localhost:8081](http://localhost:8081/q/swagger-ui)
 
 * Stop the demo
 

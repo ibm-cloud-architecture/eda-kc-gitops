@@ -1,5 +1,5 @@
 resources:
-  - ./service-account.yaml
+  # - ./service-account.yaml
   - ./configmap.yaml  
   - ./service.yaml
   #- ./route.yaml

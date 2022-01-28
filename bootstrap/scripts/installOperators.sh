@@ -4,7 +4,7 @@ scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 install_operator() {
 PRODUCT=$1
-alreadyDefined=$(oc get -n openshift-operators subscription $PRODUCT 2>&1)
+alreadyDefined=$(oc get -n openshift-operators subscription $PRODUCT 2> /dev/null)
 if [[ -z "$alreadyDefined" ]]
 then
     oc apply -k $scriptDir/../$PRODUCT

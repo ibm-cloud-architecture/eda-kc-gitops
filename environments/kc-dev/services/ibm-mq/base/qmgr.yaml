@@ -27,10 +27,13 @@ spec:
       containers:
       - name: qmgr
         image: quay.io/ibmcase/ibm-mqadvanced-server-dev:9.2.4.0-amd64
-        env:
-            - name: MQSNOAUT
-              value: 'yes'
-
+        ports:
+        - containerPort: 1414
+        - containerPort: 9443
+        - containerPort: 5672
+        envFrom:
+        - configMapRef:
+            name:  kc-mq-config
   version: 9.2.4.0-r1
   web:
     enabled: true

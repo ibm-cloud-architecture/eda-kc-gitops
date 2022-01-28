@@ -4,3 +4,4 @@ metadata:
   name: kc-order-ui-cm
 data:
   APP_VERSION: 0.0.1
+  HOST_API: eda-kc-order-cmd-mq.kc-dev.svc:8080
