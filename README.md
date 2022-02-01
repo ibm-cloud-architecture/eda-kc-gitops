@@ -1,13 +1,33 @@
 # EDA KContainer shipment solution GitOps repository
 
-This is the 2022 version of the KC solution. The update is for adopting MQ to support SAGA orchestration and
-Kafka for eventing.
+This is the 2022 version of the [KC solution](https://ibm-cloud-architecture.github.io/refarch-kc/) GitOps. 
 
-This repository uses a GitOps approach to manage deployment to OpenShift Cluster. Also we make 
+The current update is for adopting MQ to support the SAGA pattern orchestration and
+Kafka for eventing. 
+
+As the implementation of the GitOps practice, this repository includes how to deploy IBM Event Streams and IBM MQ
+as well as the microservices that are part of the solution. 
 
 ## Scenario presentation
 
-## Bootstrap GitOps on OpenShift
+The [Saga pattern](https://ibm-cloud-architecture.github.io/refarch-eda/patterns/saga/) helps to support a long running 
+transaction that can be broken up to a collection of sub transactions that can be interleaved any way with other transactions.
+
+The SAGA orchestration is done by the order service that sends commands to drive each SAGA participant on what to do and when. 
+To support strong consistency and exactly once delivery we are using Queues.
+
+The Saga will be started by adding a new order, or updating major caracteristics of an existing order.
+
+The demonstration illustrates the happy path, where each participants respond positively, so voyage and container are
+assigned to the order,
+
+![](./docs/images/saga-flow.png)
+
+and one uncomplete path, where the order will not be satisfied because of lack of refrigerator containers.
+
+![](./docs/images/compensation-flow.png)
+
+So the compensation logic will roll back the Voyage assignment.
 
 
 ## Run the solution locally
@@ -58,7 +78,7 @@ kam bootstrap \
 * Added scripts to deploy the gitops, pipelines operators: `scripts/installOperators.sh`
 
 
-### Bootstrap
+### Bootstrap GitOps
 
 * Login to the OpenShift Console, and get login token to be able to use `oc cli`
 * If not done already, use the script to install GitOps and Pipeline operators: 
@@ -81,7 +101,7 @@ a list of pods like:
     openshift-gitops-server-7957cc47d9-cmxvw                      1/1     Running   0          4h5m
   ```
 
-* If not done already, install IBM product catalog
+* If not done already, install IBM product catalog subscriptions:
 
   ```sh
   ./bootstrap/scripts/installIBMCatalog.sh
@@ -99,8 +119,7 @@ with the entitlement key
     --namespace=openshift-operators \
     --docker-password=$KEY 
     ```
-* Deploy IBM product Operators to monitor All Namespaces 
-
+* Deploy IBM product Operators (Event Streams, MQ) to monitor All Namespaces 
 
   ```sh
   ./bootstrap/scripts/installIBMOperators.sh
@@ -112,7 +131,7 @@ with the entitlement key
    oc apply -k bootstrap/argocd-project
    ```
 
-* To get the `admin` user's password use the command
+* To get the `admin` user's password use the following command
 
     ```sh
     oc extract secret/openshift-gitops-cluster -n openshift-gitops --to=-
@@ -125,16 +144,20 @@ with the entitlement key
    ```
 
 
-* To start the CD management with ArgoCD, just executing the following should work.
+* To start the Continuous Deployment management with ArgoCD, just executing the following command:
 
 ```sh
 oc apply -k config/argocd
 ```
 
-The expected set of ArgoCD apps looks like:
+The expected set of ArgoCD apps looks like the following:
 
 ![](./docs/images/kc-mq-argoapps.png)
 
   * Argo-app is an app of apps
   * dev-env is for the rt-inventory-dev namespace
   * dev-services is for event streams and mq deployment in dev-env namespace
+  * kc-dev-eda-kc-order-cmd-mq-app: the order manager microservice deployment, using MQ for the saga
+  * kc-dev-eda-kc-order-mq-ui-app: the user interface app for demonstration
+  * kc-dev-eda-kc-reefer-ms-mq-app: the Refrigerator container, Reefer, manager microservice participant into the SAGA
+  * kc-dev-eda-kc-voyage-ms-mq-app: The Voyage (Vessel trips) manager microservice also  participant into the SAGA
