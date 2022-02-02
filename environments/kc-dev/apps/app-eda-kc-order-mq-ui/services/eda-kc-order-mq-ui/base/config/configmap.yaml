@@ -4,4 +4,7 @@ metadata:
   name: kc-order-ui-cm
 data:
   APP_VERSION: 0.0.1
-  HOST_API: eda-kc-order-cmd-mq.kc-dev.svc:8080
+  API_HOST_ORDERMS: eda-kc-order-cmd-mq.kc-dev.svc
+  API_PORT_ORDERMS: 8080
+  API_HOST_VOYAGESMS: eda-kc-voyage-ms-mq.kc-dev.svc
+  API_PORT_VOYAGESMS: 8080
