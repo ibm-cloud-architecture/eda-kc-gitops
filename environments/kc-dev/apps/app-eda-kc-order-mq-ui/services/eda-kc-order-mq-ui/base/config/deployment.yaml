@@ -27,8 +27,7 @@ spec:
         envFrom:
         - configMapRef:
             name: kc-order-ui-cm
-        image: quay.io/kbilquees/eda-kc-order-mq-ui-main_web
-        # quay.io/ibmcase/eda-kc-order-mq-ui
+        image: quay.io/ibmcase/eda-kc-order-mq-ui
         imagePullPolicy: Always
 
         ports:
