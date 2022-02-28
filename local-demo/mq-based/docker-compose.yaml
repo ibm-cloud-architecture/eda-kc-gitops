@@ -1,6 +1,8 @@
 version: '3.7'
 services:
   ibmmq:
+    hostname: ibmmqbroker
+    container_name: ibmmqbroker
     environment:
       LICENSE: accept
       MQ_APP_PASSWORD: passw0rd
@@ -14,45 +16,97 @@ services:
     restart: always
     stdin_open: true
     tty: true
+  zookeeper:
+    image: cp.icr.io/cp/ibm-eventstreams-kafka:10.5.0
+    container_name: zookeeper
+    hostname: zookeeper
+    command: [
+      "sh", "-c",
+      "bin/zookeeper-server-start.sh config/zookeeper.properties"
+    ]
+    ports:
+      - "2181:2181"
+    environment:
+      LOG_DIR: /tmp/logs
+
+  kafka:
+    image: cp.icr.io/cp/ibm-eventstreams-kafka:10.5.0
+    container_name: kafka
+    hostname: kafka
+    command: [
+      "sh", "-c",
+      "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} \
+      --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} \
+      --override listener.security.protocol.map=$${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP} \
+      --override inter.broker.listener.name=$${KAFKA_INTER_BROKER_LISTENER_NAME} \
+      --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT}"
+    ]
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:9092"
+    environment:
+      LOG_DIR: "/tmp/logs"
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: EXTERNAL://0.0.0.0:9092,INTERNAL://kafka:29092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
   orderms:
+    hostname: orderms
+    container_name: orderms
     environment:
       FREEZER_REQUEST_QUEUE: DEV.FREEZER_REQUESTS
       FREEZER_RESPONSE_QUEUE: DEV.FREEZER_RESPONSES
-      MQ_URL: "failover:(amqp://host.docker.internal:5672?jms.prefetchPolicy.queuePrefetch=1)"
+      MQ_URL: "failover:(amqp://ibmmqbroker:5672?jms.prefetchPolicy.queuePrefetch=1)"
       VOYAGE_REQUEST_QUEUE: DEV.VOYAGE_REQUEST
       VOYAGE_RESPONSE_QUEUE: DEV.VOYAGE_RESPONSE
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
     image: "quay.io/ibmcase/eda-kc-order-ms-mq"
     depends_on:
-      - "ibmmq"
+      - ibmmq
     ports:
       - "8080:8080"
   reeferms:
+    hostname: reeferms
+    container_name: reeferms
     environment:
       FREEZER_REQUEST_QUEUE: DEV.FREEZER_REQUESTS
       FREEZER_RESPONSE_QUEUE: DEV.FREEZER_RESPONSES
-      MQ_URL: "failover:(amqp://host.docker.internal:5672?jms.prefetchPolicy.queuePrefetch=1)"
+      MQ_URL: "failover:(amqp://ibmmqbroker:5672?jms.prefetchPolicy.queuePrefetch=1)"
       VOYAGE_REQUEST_QUEUE: DEV.VOYAGE_REQUEST
       VOYAGE_RESPONSE_QUEUE: DEV.VOYAGE_RESPONSE
-    image: "quay.io/ibmcase/eda-kc-reefer-mq:1.0-distroless"
+    image: "quay.io/ibmcase/eda-kc-reefer-ms-mq"
     depends_on:
-      - "ibmmq"
+      - ibmmq
     ports:
       - "8083:8083"
   voyagems:
+    hostname: voyagems
+    container_name: voyagems
     environment:
       FREEZER_REQUEST_QUEUE: DEV.FREEZER_REQUESTS
       FREEZER_RESPONSE_QUEUE: DEV.FREEZER_RESPONSES
-      MQ_URL: "failover:(amqp://host.docker.internal:5672?jms.prefetchPolicy.queuePrefetch=1)"
+      MQ_URL: "failover:(amqp://ibmmqbroker:5672?jms.prefetchPolicy.queuePrefetch=1)"
       VOYAGE_REQUEST_QUEUE: DEV.VOYAGE_REQUEST
       VOYAGE_RESPONSE_QUEUE: DEV.VOYAGE_RESPONSE
-    image: "quay.io/ibmcase/eda-kc-voyage-ms-mq:1.2-distroless"
+    image: "quay.io/ibmcase/eda-kc-voyage-ms-mq"
     depends_on:
-      - "ibmmq"
+      - ibmmq
     ports:
       - "8081:8081"
   web:
-     image: "quay.io/kbilquees/eda-kc-order-mq-ui-main_web"
-     stdin_open: true
-     tty: true
-     ports:
-          - "8089:80"
+    image: "quay.io/ibmcase/eda-kc-order-mq-ui"
+    stdin_open: true
+    tty: true
+    environment:
+      API_HOST_ORDERMS: http://orderms
+      API_PORT_ORDERMS: 8080
+      API_HOST_VOYAGESMS: http://voyagems
+      API_PORT_VOYAGESMS: 8081
+    ports:
+      - "8089:8080"
+    depends_on:
+      - orderms
